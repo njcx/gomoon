@@ -15,7 +15,7 @@ import (
 func main() {
 	var url string
 	var passwd string
-	flag.StringVar(&url, "url", "http://127.0.0.1:8082/gate.jsp|gate.php", "url")
+	flag.StringVar(&url, "url", "http://127.0.0.1:8082/404.jsp|404.php", "url")
 	flag.StringVar(&passwd, "passwd", "admin", "password")
 	flag.Parse()
 	flag.Usage = usage
