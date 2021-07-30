@@ -19,9 +19,8 @@ func main() {
 	flag.StringVar(&passwd, "passwd", "admin", "password")
 	flag.Parse()
 	flag.Usage = usage
-	if flag.NFlag() != 2 {
-		flag.Usage()
-	}
+	flag.Usage()
+
 	reader := bufio.NewReader(os.Stdin)
 	for {
 		fmt.Print("# ")
